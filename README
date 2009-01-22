@@ -1,0 +1,56 @@
+ActsAsStarred
+=============
+
+Dead simple starring of items - like GMail
+
+Usage
+=====
+
+class YourModel < ActiveRecord::Base
+
+	acts_as_starred
+
+end
+
+This gets you:
+
+YourModel#star!
+YourModel#unstar!
+YourModel#starred_by?(user/user_id)
+YourModel#starrings
+
+That's all there is to it.
+
+Assumptions
+===========
+
+It assumes that you are using this in conjunction with something like the userstamp plugin
+which assigns the current logged in user to created_by fields.
+
+DB Structure
+============
+
+Need to add migration generator, but for now just copy this to a migration and 
+add any extra required fields
+
+class CreateStarrings < ActiveRecord::Migration
+  def self.up
+    create_table :starrings do |t|
+    	t.column :created_by, :integer
+      t.column :created_on, :datetime
+      t.column :item_id,    :integer
+      t.column :item_type,  :string        
+    end
+  end
+
+  def self.down
+    drop_table :starrings
+  end
+end
+
+Testing
+=======
+
+The tests use RSpec, so this needs to be installed in your rails app
+
+
